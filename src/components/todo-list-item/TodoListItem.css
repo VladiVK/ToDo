@@ -7,3 +7,14 @@
     /* width: 45px; */
     margin: 3px;
   }
+
+.important {
+    font-weight: 700;
+    color: rgb(17, 192, 25);
+    font-style: italic;
+}
+.done {
+    text-decoration: line-through;
+    font-style: italic;
+    color: red;
+}
