@@ -24,7 +24,7 @@ const TodoList = (props) => {
         )
     })
     return (
-        <ul className="list-group">
+        <ul className="list-group list-group-flush">
             {items}
         </ul>
     )

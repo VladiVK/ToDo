@@ -5,29 +5,48 @@ import './App.css';
 import AppHeader from '../app-header';
 import SearchPanel from '../search-panel';
 import InfosPanel from '../infos-panel';
-import TodoList from '../todo-list'
+import TodoList from '../todo-list';
+import AddItem from '../add-item';
 
 
 export default class App extends Component {
-
+    baseIndex = 100;
     state = {
         todoData: [
-            {title: 'Walk a dog', important: true, done: false, id: 1},
-            {title: 'Read a book', important: false, done: false, id: 2},
-            {title: 'Learn latin', important: false, done: false, id: 3},
-
+            this.createItem('Walk a dog'),
+            this.createItem('Read a book'),
+            this.createItem('Learn latin'),
         ],
+        term: '',
+    }
+    createItem(title) {
+        return {
+            title: title,
+            important: false,
+            done: false,
+            id: this.baseIndex++,
+        }
     }
     deleteItem = id => {
         this.setState( ({todoData}) => {
             const itemIndex = todoData.findIndex( item => item.id === id );
-
             return {
                 todoData: [ ...todoData.slice(0, itemIndex), ...todoData.slice(itemIndex + 1)]
             }
         })
         
     }
+    addItem = ( titleText) => {
+        this.setState( ({todoData}) => {
+            if(titleText) {
+                return {
+                    todoData: [ ...todoData, this.createItem(titleText) ]
+                }
+            }
+            
+        })
+    }
+
     // General method to change value of some property
     toggleProperty(arr, id, propName) {
         const itemIndex = arr.findIndex( item => item.id === id);
@@ -55,21 +74,31 @@ export default class App extends Component {
 
         })
     }
+    // Search panel method
+    search(items, term) {
+        if(term.length === 0) return items;
+        return items.filter( item => item.title.toLowerCase().includes( term.toLowerCase() ) );
+    }
+    onSearchChange = (val) => {
+        this.setState( {term: val})
+    }
 
     render() {
-        const {todoData} = this.state;
+        const {todoData, term} = this.state;
+        const visibleItems = this.search( todoData, term)
         return(
-            <div className='app-container'>
+            <div className='container app-container'>
                 <AppHeader />
                 <div className='d-flex align-items-center'>
-                    <SearchPanel />
+                    <SearchPanel onSearchChange={this.onSearchChange}/>
                     <InfosPanel />
                 </div>
-                <TodoList todoInfos={todoData}
+                <TodoList todoInfos={visibleItems}
                           onToggleImportant={this.onToggleImportant} 
                           onToggleDone={this.onToggleDone}
                           deleteItem={this.deleteItem}
                 />
+                <AddItem addItem={this.addItem}/>
             </div>
         )
     }

@@ -28,14 +28,14 @@ const TodoListItem = (props) => {
 
             <button 
                 type="button"
-                className="btn btn-outline-success float-right"
+                className="btn btn-outline-success btn-sm  float-right"
                 onClick={ onToggleImportant }
             >
                 <FontAwesomeIcon icon={faHandPointer} />
             </button>
             <button 
                 type="button"
-                className="btn btn-outline-danger float-right"
+                className="btn btn-outline-danger btn-sm float-right"
                 onClick={ deleteItem }
             >
     
